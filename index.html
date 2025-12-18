@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title> TechySphare</title>
+<meta name="description" content="Budget-friendly tech services: website design, UI/UX, ethical hacking & testing — dark/mobile-first responsive site with advanced chatbot." />
+  <link rel="stylesheet" href="Style/index.css">
+</head>
+
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <div class="logo"><img src="Others/image/logo.jpg" height="50px" style="border-radious:50px;"></div>
+    <div>
+      <h1>TechySphare</h1>
+      <p>Build Web/App • UI/UX design • Ethical Hackers help — budget friendly</p>
+    </div>
+  </div>
+  <nav>
+    <button class="btn hide-mobile" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Services</button>
+    <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+    <a href="Others/files/Massages.html"class="btn primary">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero card" id="hero">
+    <div class="hero-grid">
+      <div>
+        <h2>We build secure, beautiful digital products — on budget.</h2>
+        <p>Website design, UI/UX, and ethical hacking & testing for startups and small businesses. Fast turnarounds and clear pricing.</p>
+      </div>
+        <div class="forge-card">TechySphare</div>
+      <div class="cta-row">
+        <button class="btn primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request a Quote</button>
+        <button class="btn" onclick="openChat()">Live Support</button>
+        <button class="btn" onclick="location.hash='#portfolio'">See Samples</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <article class="card">
+      <h3>Website Design</h3>
+      <p>Mobile-first, performance-focused websites with conversion-optimized layouts — from landing pages to e-commerce.</p>
+      <p class="pill small" style="margin-top:10px">Starting ₹3,500</p>
+    </article>
+    <article class="card">
+      <h3>UI / UX Design</h3>
+      <p>User flows, wireframes, high-fidelity prototypes, and handoffs for developers. Design systems on request.</p>
+      <p class="pill small" style="margin-top:10px">Starting ₹2,200</p>
+    </article>
+   
+  </section>
+
+  <section id="portfolio" class="card">
+    <h3>Recent Works & projects</h3>
+    <div class="testimonials">
+      <div class="card" style="text-align:center;">
+        <img src="Others/image/logo.jpg" style="height:70px; border-radious:5px;"><br>
+        <strong>DayDream Beads</strong><p class="muted">E-commerce website of  handmade<br> jwellery products.</p><p>Paid ₹4,000 | Build-Time 1month</p><p>Status: In Progress</p></div>
+      
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="card">
+      <h3>Get in touch</h3>
+      <p style="color:var(--muted)">Tell us about your project. We'll reply within one business day.</p>
+      <form id="leadForm" onsubmit="return submitLead(event)">
+        <input id="name" placeholder="Your name" required style="width:100%;">
+        <input id="email" placeholder="Email or phone" required style="width:100%;">
+        <select id="service">
+          <option value="Website Design">Website Design</option>
+          <option value="UI/UX">UI / UX Design</option>
+          <option value="Pentest">Ethical Hacking & Testing</option>
+        </select>
+        <textarea id="message" placeholder="Short description of requirement"></textarea>
+        <div style="display:flex;gap:10px">
+          <button class="btn primary" type="submit">Send Request</button>
+          <button class="btn" type="button" onclick="saveDraft()">Save Draft</button>
+        </div>
+      </form>
+      <div style="margin-top:10px;color:var(--muted);font-size:13px">Or email: <a href="mailto:hello@blackforge.io" style="color:var(--accent)">techysphare@gmail.com</a></div>
+    </div>
+     <aside class="card">
+      <h3>Support & Live Chat</h3>
+      <p style="color:var(--muted)">Quick answers for common questions — or start a live chat using the widget.</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <div class="pill small">Response SLA: 1 business day</div>
+        <div class="pill small">Free consultation: 30 mins</div>
+      </div>
+      <div style="margin-top:14px">
+        <h4 style="margin:0 0 8px 0">Common Qs</h4>
+        <details style="color:var(--muted)"><summary>How long to build a site?</summary><div style="padding:8px 0">Typical landing: 3-7 days. Full site: 2-4 weeks depending on scope.</div></details>
+        <details style="color:var(--muted)"><summary>Do you do maintenance?</summary><div style="padding:8px 0">Yes — monthly plans available.</div></details>
+        <details style="color:var(--muted)"><summary>Can you provide a website in a week?</summary><div style="padding:8px 0">Yes — Emergency request available but its expensive compare to normal.</div></details>
+           
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  <div>© <span id="year"></span> TechySphare — Built with a dark aesthetic</div>
+</footer> 
+</div>
+
+<!-- Chat widget -->
+<div id="chatWidget" class="chat-widget" onclick="toggleChat()">💬</div>
+<div id="chatPanel" class="chat-panel" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <strong>Live Support</strong>
+    <button class="btn small" onclick="toggleChat()">Close</button>
+  </div>
+  <div id="chatLog" class="chat-log"></div>
+  <div style="display:flex;gap:8px">
+    <input id="chatInput" placeholder="Ask a question..." style="flex:1" />
+    <button class="btn small" onclick="sendChat()">Send</button>
+  </div>
+</div>
+<!-- Custom Alert -->
+<div id="alertBox" class="alert-box">
+  <div class="alert-content">
+    <p id="alertMessage"></p>
+    <button class="btn small" onclick="closeAlert()">OK</button>
+  </div>
+</div>
+
+<script type="module" src="Style/index.js"></script>
+
+</body>
+</html>
