@@ -1,0 +1,114 @@
+/* ---------------- Root / Theme ---------------- */
+:root{
+  --bg:#070707; --surface:#0f0f10; --muted:#9a9a9a; --accent:#00e6a8;
+  --glass:rgba(255,255,255,0.03); --glass-2:rgba(255,255,255,0.02);
+  --glass-3:rgba(0,0,0,0.6); --radius:14px; --card-pad:18px; --max-width:980px;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:linear-gradient(180deg,#040404 0%,#0b0b0b 60%); color:#eaeaea;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  padding:24px 12px 96px; display:flex; justify-content:center; font-size:16px; line-height:1.4;
+}
+.wrap{max-width:var(--max-width);width:100%}
+
+/* ---------------- Header ---------------- */
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;margin-bottom:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+  border-radius:12px;backdrop-filter: blur(6px);box-shadow:0 6px 20px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.03);
+}
+a{text-decoration:none black;}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#00a6ff);
+display:flex;align-items:center;justify-content:center;font-weight:700;color:#02110a}
+.brand h1{font-size:18px;margin:0}
+.brand p{font-size:12px;color:var(--muted);margin:0}
+nav{display:flex;gap:8px;align-items:center}
+.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:inherit;font-weight:600;cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.primary{background:linear-gradient(90deg,var(--accent),#00a6ff);color:#04120b;border:none}
+
+/* ---------------- Hero ---------------- */
+.hero{display:grid;grid-template-columns:1fr;gap:18px;padding:22px;border-radius:16px;
+background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);
+box-shadow:0 8px 30px rgba(0,0,0,0.6);overflow:hidden;position:relative}
+.hero h2{font-size:26px;margin:0;transform:translateY(20px);opacity:0;transition:all 0.6s ease;}
+.hero p{color:var(--muted);margin:0;opacity:0;transform:translateY(10px);transition:all 0.6s ease;}
+.hero.show h2,.hero.show p{opacity:1;transform:translateY(0);}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;opacity:0;transition:all 0.6s ease;}
+.hero.show .cta-row{opacity:1;}
+
+/* ---------------- Services ---------------- */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;opacity:0;transform:translateY(20px);transition:all 0.6s ease;}
+.services.show{opacity:1;transform:translateY(0);}
+.card{background:linear-gradient(180deg,var(--glass),transparent);padding:var(--card-pad);border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:all 0.3s ease}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.7);}
+.card h3{margin:0 0 6px 0}
+.card p{color:var(--muted);font-size:14px;margin:0}
+.pill{display:inline-flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,0.02);align-items:center}
+.small{padding:6px 8px;font-size:14px}
+
+/* ---------------- Portfolio / Testimonials ---------------- */
+#portfolio{margin-top:18px;opacity:0;transform:translateY(20px);transition:all 0.6s ease;}
+#portfolio.show{opacity:1;transform:translateY(0);}
+.testimonials{display:flex;gap:10px;overflow-x:auto;padding:10px 0;scroll-snap-type:x mandatory}
+.testimonials .card{min-width:220px;flex:0 0 auto;scroll-snap-align:start}
+
+/* ---------------- Contact ---------------- */
+.contact{display:grid;grid-template-columns:1fr 360px;gap:12px;margin-top:18px;opacity:0;transform:translateY(20px);transition:all 0.6s ease;}
+.contact.show{opacity:1;transform:translateY(0);}
+input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px;border-radius:10px;color:inherit;outline:none}
+textarea{min-height:120px;resize:vertical}
+
+/* ---------------- Footer ---------------- */
+footer{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* ---------------- Chat Widget ---------------- */
+.chat-widget{position:fixed;right:16px;bottom:18px;width:64px;height:64px;border-radius:50%;
+background:linear-gradient(135deg,var(--accent),#00a6ff);display:flex;align-items:center;justify-content:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);cursor:pointer;z-index:999;}
+.chat-widget.new-msg{animation:bounce 0.6s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.chat-panel{position:fixed;right:16px;bottom:100px;width:330px;max-width:92vw;border-radius:14px;padding:12px;background:var(--surface);box-shadow:0 16px 40px rgba(0,0,0,0.7);display:flex;flex-direction:column;gap:8px;border:1px solid rgba(255,255,255,0.03);z-index:998}
+.chat-log{max-height:240px;overflow:auto;padding:6px;display:flex;flex-direction:column;gap:8px}
+.msg{padding:8px 10px;border-radius:10px;max-width:80%}
+.from-me{align-self:flex-end;background:linear-gradient(90deg,var(--accent),#00a6ff);color:#02110b}
+.from-them{align-self:flex-start;background:#111111;border:1px solid rgba(255,255,255,0.03)}
+.msg.typing::after{content:'...';animation:blink 1s steps(5,start) infinite;}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------------- Custom Alert Box ---------------- */
+.alert-box{position:fixed;top:0; left:0;width:100vw; height:100vh;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .35s ease;z-index:99999;}
+.alert-box.show{opacity:1;pointer-events:auto;}
+.alert-content{background:var(--surface);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:22px 24px;min-width:260px;max-width:80vw;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.6);transform:scale(0.7);opacity:0;animation:alertPop .35s ease forwards;}
+@keyframes alertPop{0% {transform:scale(0.7); opacity:0;}60% {transform:scale(1.05); opacity:1;}100%{transform:scale(1); opacity:1;}}
+
+/* ---------------- Responsive ---------------- */
+.hide-mobile{display:block}
+@media (max-width:880px){
+  .services{grid-template-columns:1fr;}.contact{grid-template-columns:1fr;}.hero h2{font-size:20px}.wrap{padding:0}header{flex-direction:column;align-items:flex-start;gap:8px}.hide-mobile{display:none}
+}
+
+.forge-card{
+  margin:60px auto;
+  width:300px;
+  height:300px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  display: flex;
+  border-radius:var(--radius);
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+  transform-style:preserve-3d;
+  animation:rotate 10s infinite linear;
+}
+@keyframes rotate{
+  0%{transform:rotateY(0deg);} 
+  100%{transform:rotateY(360deg);} 
+}
+
