@@ -1,117 +1,249 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin Dashboard — BlackForge Tech</title>
-  <link rel="stylesheet" href="Massages.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Dashboard — BlackForge Tech</title>
+<link rel="stylesheet" href="Massages.css">
 </head>
+
 <body class="fade-in">
 
 <!-- ================= LOGIN ================= -->
-<div class="card slide-up" id="loginCard">
-  <h3>Admin Login</h3>
-  <input type="email" id="adminEmail" placeholder="Email">
-  <input type="password" id="adminPass" placeholder="Password">
-  <button onclick="login()">Login</button>
+<div class="login-wrapper" id="loginCard">
+  <div class="card login-card slide-up">
+    <h2>Admin Login</h2>
+    <p class="muted">Secure access only</p>
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
 </div>
 
 <!-- ================= DASHBOARD ================= -->
 <div id="dashboard" style="display:none;">
-  <a style="display:flex; justify-content: space-evenly; align-items:center; margin-bottom:12px;">
-    <div class="pill small">Role: <span id="roleLabel"></span></div>
-    <button onclick="logout()">Logout</button>
-  </a>
 
-  <!-- ===== STATUS ANALYTICS ===== -->
-  <div class="analytics">
-    <div class="stat-card">
-      <span>Total</span>
-      <strong id="totalCount">0</strong>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <h2 class="brand">TechySphare</h2>
+    <button onclick="showSection('dashboardSection', this)" class="nav-btn active">Dashboard</button>
+    <button onclick="showSection('leadsSection', this)" class="nav-btn">Leads</button>
+    <button onclick="showSection('projectsSection', this)" class="nav-btn">Projects</button>
+    <button onclick="showSection('adminsSection', this)" class="nav-btn super-only">Manage Admins</button>
+    <button onclick="showSection('logsSection', this)" class="nav-btn super-only">Activity Logs</button>
+    <button onclick="logout()" class="nav-btn danger">Logout</button>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="pill">Role: <span id="roleLabel"></span></div>
+      <button class="outline mobile-menu" onclick="toggleSidebar()">☰</button>
     </div>
-    <div class="stat-card pending">
-      <span>Pending</span>
-      <strong id="pendingCount">0</strong>
-    </div>
-    <div class="stat-card contacted">
-      <span>Contacted</span>
-      <strong id="contactedCount">0</strong>
-    </div>
-  </div>
 
-  <!-- ===== LEADS TOOLBAR ===== -->
-  <div class="toolbar">
-    <div class="pill">Leads: <span id="leadCount">0</span></div>
-    <button onclick="exportCSV()">Export CSV</button>
-  </div>
+    <!-- ===== DASHBOARD ===== -->
+    <section id="dashboardSection" class="section active">
+      <div class="analytics">
+        <div class="stat-card">
+          <span>Total Leads</span>
+          <strong id="totalCount">0</strong>
+        </div>
+        <div class="stat-card pending">
+          <span>Pending</span>
+          <strong id="pendingCount">0</strong>
+        </div>
+        <div class="stat-card contacted">
+          <span>Contacted</span>
+          <strong id="contactedCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Today</span>
+          <strong id="todayCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>This Month</span>
+          <strong id="monthCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Conversion</span>
+          <strong id="conversionRate">0%</strong>
+        </div>
+        <div class="stat-card">
+          <span>Last Lead</span>
+          <strong id="lastLeadTime" style="font-size:12px;">-</strong>
+        </div>
+      </div>
 
-  <!-- Loader -->
-  <div id="loader" class="loader">Loading leads...</div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:20px;">
+        <div class="card" style="flex:1; min-width:280px;">
+          <h3>Leads Overview</h3>
+          <canvas id="leadsChart" height="120"></canvas>
+        </div>
 
-  <!-- Leads Table -->
-  <table class="table" id="leadsTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Contact</th>
-        <th>Service</th>
-        <th>Message</th>
-        <th>Status</th>
-        <th>Action</th>
-        <th>When</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+        <div class="card" style="flex:1; min-width:280px;">
+          <h3>Status Distribution</h3>
+          <canvas id="statusChart" height="120"></canvas>
+        </div>
+      </div>
+    </section>
 
-  <!-- ===== ACTIVITY LOGS ===== -->
-  <div class="card" id="activityLogsCard">
-    <h3>Activity Logs</h3>
-    <div class="log-toolbar">
-      <input type="text" id="logSearch" placeholder="Search logs..." oninput="filterLogs()">
-    <a style="display:flex; width:40%;">  <input type="date" id="startDate" onchange="filterLogs()">
-      <input type="date" id="endDate" onchange="filterLogs()"></a>
-      <button onclick="exportLogsCSV()">Export Logs CSV</button>
-    </div>
-    <table class="table" id="logsTable">
-      <thead>
-        <tr>
-          <th>Admin Email</th>
-          <th>Role</th>
-          <th>Action</th>
-          <th>Lead ID</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Time</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+    <!-- ===== LEADS ===== -->
+    <section id="leadsSection" class="section">
+      <div class="toolbar">
+        <div class="pill">Leads: <span id="leadCount">0</span></div>
+        <input type="text" id="leadSearch" placeholder="Search leads..." oninput="filterLeads()">
+        <select id="statusFilter" onchange="filterLeads()" style="width:20%;">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="contacted">Contacted</option>
+        </select>
+        <button onclick="renderLeads()" class="nav-btn">Refresh Leads</button>
+        <button onclick="exportCSV()" class="nav-btn">Export CSV</button>
+      </div>
+
+      <div id="loader" class="loader">Loading leads...</div>
+
+      <div class="table-wrap">
+        <table class="table" id="leadsTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Service</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Action</th>
+              <th>When</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== ACTIVITY LOGS (SUPER ONLY) ===== -->
+    <section id="logsSection" class="section">
+      <div class="card">
+        <h3>Activity Logs</h3>
+        <div class="log-toolbar">
+          <input type="text" id="logSearch" placeholder="Search logs..." oninput="filterLogs()">
+          <input type="date" id="startDate" onchange="filterLogs()">
+          <input type="date" id="endDate" onchange="filterLogs()">
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" id="logsTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+                <th>Lead</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Time</th>
+                <th>Del</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ADMIN MANAGEMENT (SUPER ONLY) ===== -->
+    <section id="adminsSection" class="section">
+      <div class="card">
+        <h3>Manage Admins</h3>
+        <p class="muted">Only super admin can view this</p>
+        <div class="admin-form super-only">
+          <input type="email" id="newAdminEmail" placeholder="Admin Email">
+          <input type="password" id="newAdminPass" placeholder="Password">
+          <select id="newAdminRole">
+            <option value="viewer">Viewer</option>
+            <option value="editor">Editor</option>
+            <option value="super">Super</option>
+          </select>
+          <button onclick="addAdmin()">Add Admin</button>
+        </div>
+        <div class="table-wrap card">
+          <table class="table" id="adminsTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminsBody">
+              <tr><td colspan="4" class="muted">Coming from Firestore</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projectsSection" class="section projects-panel">
+      <div class="card super-only">
+        <h3>Project Management</h3>
+        <p class="muted">Track and manage ongoing projects</p>
+
+        <!-- Add Project -->
+        <div class="admin-form">
+          <input type="text" id="projTitle" placeholder="Project Title">
+          <input type="text" id="projClient" placeholder="Client Name">
+          <input type="email" id="projEmail" placeholder="Client Email">
+          <select id="projStatus">
+            <option value="pending">Pending</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+          <input type="number" id="projProgress" placeholder="Progress %" min="0" max="100">
+          <input type="date" id="projDeadline">
+          <textarea id="projNotes" placeholder="Notes"></textarea>
+          <button onclick="addProject()">Add Project</button>
+        </div>
+      </div>
+
+      <!-- Project Table -->
+      <div class="card table-wrap">
+        <table class="table" id="projectsTable">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Client</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Deadline</th>
+              <th>Manager</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
 </div>
 
-
-<!-- ================= LEAD DETAILS MODAL ================= -->
+<!-- ===== LEAD DETAILS MODAL ===== -->
 <div id="leadDetailBox">
   <div class="alert-content">
     <h3>Lead Details</h3>
     <div id="leadDetailContent"></div>
-    <div style="text-align:center; margin-top:14px;">
+    <div class="center">
       <button onclick="closeLeadDetails()">Close</button>
     </div>
   </div>
 </div>
 
-
-<!-- ================= ALERT / TOAST ================= -->
-<div id="alertBox1" class="alert-box">
-  <div class="alert-content">
-    <p id="alertMessage1"></p>
-    <button onclick="closeAlert1()">OK</button>
-  </div>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="./Massages.js"></script>
 </body>
 </html>
+
